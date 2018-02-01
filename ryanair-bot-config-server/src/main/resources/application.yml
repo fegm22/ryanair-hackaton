@@ -5,7 +5,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/fegm22/ryanair-bot-config-repository
-          searchPaths:
+          uri: https://github.com/fegm22/ryanair-hackaton
+          searchPaths: ryanair-bot-config-repository
           username: fegm22
           password: 12345678
