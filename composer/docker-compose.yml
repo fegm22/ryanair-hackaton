@@ -1,0 +1,18 @@
+version: "3"
+services:
+  ry-command-service:
+    image: ry-command-service:latest
+    ports:
+      - "8080:8080"
+  ry-fares:
+    image: ry-fares:latest
+    ports:
+      - "8088:8080"
+  ry-scheduled-flights:
+    image: ry-scheduled-flights:latest
+    ports:
+      - "8089:8080"
+  ry-bot:
+    image: ry-bot:latest
+    ports:
+      - "8085:8080"
