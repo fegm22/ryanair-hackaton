@@ -1,6 +1,6 @@
-package org.ryanairbot.integration;
+package com.ryanair.hackaton.interconnections.integration;
 
-import org.ryanairbot.dto.RouteDto;
+import com.ryanair.hackaton.interconnections.dto.RouteDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
@@ -11,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.List;
-
 
 public class RoutesApiClient extends BaseClient {
 

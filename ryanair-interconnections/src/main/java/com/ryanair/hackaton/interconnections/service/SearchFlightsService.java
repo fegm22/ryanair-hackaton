@@ -1,9 +1,11 @@
-package org.ryanairbot.service;
+package com.ryanair.hackaton.interconnections.service;
 
-import org.ryanairbot.dto.FlightDto;
-import org.ryanairbot.model.Airport;
-import org.ryanairbot.model.Flight;
-import org.ryanairbot.model.Route;
+
+import com.ryanair.hackaton.interconnections.dto.FlightDto;
+import com.ryanair.hackaton.interconnections.model.Airport;
+import com.ryanair.hackaton.interconnections.model.Flight;
+import com.ryanair.hackaton.interconnections.model.Route;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +24,11 @@ import static java.util.Collections.emptyList;
 @Service
 public class SearchFlightsService {
 
+    @Autowired
+    private SearchRouteService searchRouteService;
 
-    private SearchRouteService searchRouteService = new SearchRouteService();
-    private SchedulesService scheduleService = new SchedulesService();
+    @Autowired
+    private SchedulesService scheduleService;
 
     @Cacheable("CACHE_FLIGHTS")
     public List<FlightDto> findFlights(

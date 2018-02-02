@@ -6,15 +6,6 @@ info:
     timestamp: ${timestamp}
     scmVersion: ${buildNumber}
 
-routesApi:
-  url: https://api.ryanair.com/core/3/routes/
-
-schedulesApi:
-  url: https://api.ryanair.com/timetable/3/schedules/{departure}/{arrival}/years/{year}/months/{yearMonth}
-
-airportApi:
-    url: https://api.ryanair.com/core/3/airports/
-
 endpoints:
   health:
     sensitive: false
@@ -27,6 +18,17 @@ middleware:
 ryanair:
   token: 506346062:AAHPvBprq65xTow0cBsls5VS88FZyCeLO20
   user: ryanair
-  commandservice:
-    url: http://localhost:8092/commands
 
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 80000
+
+feign:
+  hystrix:
+    enabled: true
+  okhttp:
+    enabled: true

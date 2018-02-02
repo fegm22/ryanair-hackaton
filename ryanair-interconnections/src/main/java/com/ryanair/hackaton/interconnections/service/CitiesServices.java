@@ -1,7 +1,7 @@
-package org.ryanairbot.service;
+package com.ryanair.hackaton.interconnections.service;
 
-import org.ryanairbot.dto.CitiesDto;
-import org.ryanairbot.integration.CitiesApiClient;
+import com.ryanair.hackaton.interconnections.dto.CitiesDto;
+import com.ryanair.hackaton.interconnections.integration.CitiesApiClient;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

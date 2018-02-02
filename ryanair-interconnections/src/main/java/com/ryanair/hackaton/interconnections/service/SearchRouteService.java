@@ -1,12 +1,12 @@
-package org.ryanairbot.service;
+package com.ryanair.hackaton.interconnections.service;
 
+import com.ryanair.hackaton.interconnections.model.Airport;
+import com.ryanair.hackaton.interconnections.model.Route;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.Graphs;
 import org.jgrapht.alg.AllDirectedPaths;
 import org.jgrapht.graph.DefaultEdge;
-import org.ryanairbot.model.Airport;
-import org.ryanairbot.model.Route;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class SearchRouteService {
 
     @Cacheable("CACHE_ROUTES_SEARCHES")
     public List<List<Route>> findRoutesBetween(Airport departure, Airport arrival, int maxStops) {
-        DirectedGraph<Airport, DefaultEdge> routes = routesService.getAllAvailableRoutes();
+        DirectedGraph<Airport, DefaultEdge> routes = routesService.getAvailableRoutes();
 
         if (departure.equals(arrival) || maxStops < 0) return emptyList();
 

@@ -1,4 +1,4 @@
-package org.ryanairbot.model;
+package com.ryanair.hackaton.interconnections.model;
 
 import javax.validation.ValidationException;
 import java.io.Serializable;

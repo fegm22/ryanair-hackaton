@@ -1,4 +1,12 @@
 package org.ryanairbot.client;
 
-public class CommandClient {
+import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+@FeignClient("COMMAND-SERVICE")
+public interface CommandClient {
+
+    @PostMapping("/commands")
+    String processMessage(@RequestBody String message);
 }

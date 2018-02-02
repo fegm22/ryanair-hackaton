@@ -1,4 +1,4 @@
-package org.ryanairbot.dto;
+package com.ryanair.hackaton.interconnections.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

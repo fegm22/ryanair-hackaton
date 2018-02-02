@@ -1,4 +1,4 @@
-package org.ryanairbot.utils;
+package com.ryanair.hackaton.interconnections.utils;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

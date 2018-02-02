@@ -1,4 +1,4 @@
-package org.ryanairbot.integration;
+package com.ryanair.hackaton.interconnections.integration;
 
 import org.springframework.web.client.RestTemplate;
 

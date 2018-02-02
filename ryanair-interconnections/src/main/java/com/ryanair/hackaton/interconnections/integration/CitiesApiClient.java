@@ -1,6 +1,6 @@
-package org.ryanairbot.integration;
+package com.ryanair.hackaton.interconnections.integration;
 
-import org.ryanairbot.dto.CitiesDto;
+import com.ryanair.hackaton.interconnections.dto.CitiesDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;

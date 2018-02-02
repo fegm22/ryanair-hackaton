@@ -1,12 +1,13 @@
-package org.ryanairbot.service;
+package com.ryanair.hackaton.interconnections.service;
 
-import org.ryanairbot.dto.SchedulesDto;
-import org.ryanairbot.integration.SchedulesApiClient;
-import org.ryanairbot.model.Airport;
-import org.ryanairbot.model.Flight;
-import org.ryanairbot.model.Route;
-import org.ryanairbot.model.Timetable;
+import com.ryanair.hackaton.interconnections.dto.SchedulesDto;
+import com.ryanair.hackaton.interconnections.integration.SchedulesApiClient;
+import com.ryanair.hackaton.interconnections.model.Airport;
+import com.ryanair.hackaton.interconnections.model.Flight;
+import com.ryanair.hackaton.interconnections.model.Route;
+import com.ryanair.hackaton.interconnections.model.Timetable;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
+@Service
 public class SchedulesService {
 
     private SchedulesApiClient schedulesApiClient;

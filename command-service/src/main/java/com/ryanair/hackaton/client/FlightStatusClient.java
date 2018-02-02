@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
-@FeignClient(name = "flightstatus", url = "${flightstatus.feign.locationOfServers}")
+@FeignClient(name = "RYANAIR-SCHEDULE-FLIGHTS")
 public interface FlightStatusClient {
 
     @RequestMapping(method = GET, path = "/flightstatus/{flightNumber}")

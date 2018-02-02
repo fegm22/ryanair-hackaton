@@ -1,11 +1,11 @@
-package org.ryanairbot.dto;
+package com.ryanair.hackaton.interconnections.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ryanair.hackaton.interconnections.model.Airport;
+import com.ryanair.hackaton.interconnections.model.Route;
 import lombok.Data;
-import org.ryanairbot.model.Airport;
-import org.ryanairbot.model.Route;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package org.ryanairbot.model;
+package com.ryanair.hackaton.interconnections.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

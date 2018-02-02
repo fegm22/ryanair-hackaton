@@ -1,6 +1,7 @@
 package org.ryanairbot.bot;
 
 import org.ryanairbot.service.RyanairService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
@@ -18,19 +19,21 @@ public class TelegramHandlers extends TelegramLongPollingBot {
 
     private final String botUsername;
 
-    public TelegramHandlers(RyanairService ryanairService/*, String token, String botUsername*/) {
+    public TelegramHandlers(RyanairService ryanairService,
+                            @Value("${ryanair.token}") final String token,
+                            @Value("${ryanair.user}") final String botUsername) {
         this.ryanairService = ryanairService;
-        this.token = "506346062:AAHPvBprq65xTow0cBsls5VS88FZyCeLO20";
-        this.botUsername = "ryanair";
+        this.token = token;
+        this.botUsername = botUsername;
     }
 
     @Override
     public void onUpdateReceived(Update update) {
         Optional.ofNullable(update)
                 .map(Update::getMessage)
-                .ifPresent(message -> {
-                    this.sendMessage(message.getChatId().toString(), ryanairService.processMessage(message.getText()));
-                });
+                .ifPresent(message ->
+                    this.sendMessage(message.getChatId().toString(), ryanairService.processMessage(message.getText()))
+                );
     }
 
     private void sendMessage(String chatId, String text) {

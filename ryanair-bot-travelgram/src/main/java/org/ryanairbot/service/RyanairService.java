@@ -44,11 +44,11 @@ public class RyanairService {
         if (query.toUpperCase().contains("API")) {
             return commandClient.processMessage(query);
         } else {
-            return artificialInteligenceProcess(query);
+            return artificialIntelligenceProcess(query);
         }
     }
 
-    private String artificialInteligenceProcess(String message) {
+    private String artificialIntelligenceProcess(String message) {
 
         Map<String, String> citiesMap = interconnectionsClient.getAllAvailableAirports();
         Map<String, Set<String>> routes = interconnectionsClient.getAllAvailableRoutes();
@@ -75,13 +75,21 @@ public class RyanairService {
         int index = 0;
         Map<Integer, String> cities = new HashMap<>();
         for (String word : queryWords) {
-            if (routes.containsKey(word)) {
+            if (routes.containsKey(word.toUpperCase())) {
                 cities.put(index++, word.toUpperCase());
-            } else if (citiesMap.containsKey(word.toUpperCase())) {
-                cities.put(index++, citiesMap.get(word.toUpperCase()));
+            } else if (citiesMap.containsValue(word.toUpperCase())) {
+                cities.put(index++, getKeysByValue(citiesMap, word.toUpperCase()) );
             }
         }
         return cities;
+    }
+
+    public static String getKeysByValue(Map<String, String> map, String value) {
+        return map.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().equals(value))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet()).stream().findFirst().get();
     }
 
     private String getInstruction(String query) {

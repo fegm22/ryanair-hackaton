@@ -1,11 +1,11 @@
-package org.ryanairbot.model;
+package com.ryanair.hackaton.interconnections.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.ryanairbot.utils.LocalIsoDateTimeSerializer;
+import com.ryanair.hackaton.interconnections.utils.LocalIsoDateTimeSerializer;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

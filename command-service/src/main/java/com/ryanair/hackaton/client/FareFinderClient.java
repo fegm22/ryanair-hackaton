@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * francisco . 2018
  **/
-@FeignClient(name = "fare", url = "${fare.feign.locationOfServers}")
+@FeignClient(name = "RYANAIR-FARE")
 public interface FareFinderClient {
 
     @GetMapping("/v1/fares/{origin}/{destination}/{date}")
