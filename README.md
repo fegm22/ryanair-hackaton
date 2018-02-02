@@ -24,7 +24,7 @@ It's necessary modify the host file in your machine. Adding three new hostname. 
 
 sudo nano /etc/hosts
 
-add the following names:
+Add the following names:
 
 
 127.0.0.1       eureka-primary
@@ -39,25 +39,15 @@ add the following names:
 In the application.yml modify the uri and the searchPaths in order to point your repository.
 
 `server:
-
   port: 9000
-
 spring:
-
   cloud:
-
     config:
-
       server:
-
         git:
-
           uri: https://github.com/your-user/git-name-repo
-
           searchPaths: folder-if-exists
-
           username: user-if-private
-
           password: password-if-private`
 
 
