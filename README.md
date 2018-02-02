@@ -38,17 +38,19 @@ Add the following names:
 ### Run the Configuration Server
 In the application.yml modify the uri and the searchPaths in order to point your repository.
 
-`server:<br />
-  port: 9000<br />
-spring:<br />
-  cloud:<br />
-    config:<br />
-      server:<br />
-        git:<br />
-          uri: https://github.com/your-user/git-name-repo<br />
-          searchPaths: folder-if-exists<br />
-          username: user-if-private<br />
-          password: password-if-private`<br />
+```
+server:
+  port: 9000
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/your-user/git-name-repo
+          searchPaths: folder-if-exists
+          username: user-if-private
+          password: password-if-private
+```
 
 
 Then execute `mvn spring-boor:run`
