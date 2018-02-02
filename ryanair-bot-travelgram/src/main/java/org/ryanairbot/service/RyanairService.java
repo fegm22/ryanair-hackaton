@@ -1,35 +1,36 @@
 package org.ryanairbot.service;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.entity.BufferedHttpEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
+import org.ryanairbot.client.CommandClient;
+import org.ryanairbot.client.InterconnectionsClient;
+import org.ryanairbot.domain.FlightDto;
+import org.ryanairbot.domain.Flight;
+import org.ryanairbot.domain.Route;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+/**
+ * francisco . 2018
+ **/
 @Service
 public class RyanairService {
 
-    @Value("${ryanair.commandservice.url}")
-    private String commandServiceUrl;
+    private final InterconnectionsClient interconnectionsClient;
+    private final CommandClient commandClient;
 
-    private final InternalRyanairService internalRyanairService;
+    @Autowired
+    RyanairService(InterconnectionsClient interconnectionsClient, CommandClient commandClient){
+        this.interconnectionsClient = interconnectionsClient;
+        this.commandClient = commandClient;
 
-    public RyanairService(InternalRyanairService internalRyanairService) {
-        this.internalRyanairService = internalRyanairService;
     }
 
     /**
@@ -40,37 +41,143 @@ public class RyanairService {
      */
     public String processMessage(String query) throws RuntimeException {
 
-        if (query.toUpperCase().contains("BOT")) {
-            return internalRyanairService.processMessage(query);
+        if (query.toUpperCase().contains("API")) {
+            return commandClient.processMessage(query);
         } else {
-            return getRequestCommand(query);
+            return artificialInteligenceProcess(query);
         }
     }
 
-    private String getRequestCommand(String query) throws RuntimeException {
+    private String artificialInteligenceProcess(String message) {
 
-        try {
-            String completeURL = commandServiceUrl + URLEncoder.encode("", "UTF-8");
+        Map<String, String> citiesMap = interconnectionsClient.getAllAvailableAirports();
+        Map<String, Set<String>> routes = interconnectionsClient.getAllAvailableRoutes();
+        Map<Integer, String> citiesQuery = getCitiesQuery(message, routes, citiesMap);
 
-            CloseableHttpClient client = HttpClientBuilder.create().setSSLHostnameVerifier(new NoopHostnameVerifier()).build();
-            HttpPost request = new HttpPost(completeURL);
+        if (citiesQuery.size() == 2) {
+            String departure = citiesQuery.get(0);
+            String arrival = citiesQuery.get(1);
 
-            List<NameValuePair> params = new ArrayList<>(2);
-            params.add(new BasicNameValuePair("message", query));
-            request.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+            String instruction = getInstruction(message);
+            return getResultMessage(departure, arrival, instruction, citiesMap);
 
-            CloseableHttpResponse response = client.execute(request);
-            HttpEntity ht = response.getEntity();
-
-            BufferedHttpEntity buf = new BufferedHttpEntity(ht);
-            String responseString = EntityUtils.toString(buf, "UTF-8");
-
-            JSONObject jsonObject = new JSONObject(responseString);
-
-            return jsonObject.getString("header") + "\n\n" + jsonObject.getString("message");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } else {
+            return helpMessage();
         }
+    }
+
+    private Map<Integer, String> getCitiesQuery(String query,
+                                                Map<String, Set<String>> routes,
+                                                Map<String, String> citiesMap) {
+        String[] items = query.split(" ");
+        List<String> queryWords = Arrays.asList(items);
+
+        int index = 0;
+        Map<Integer, String> cities = new HashMap<>();
+        for (String word : queryWords) {
+            if (routes.containsKey(word)) {
+                cities.put(index++, word.toUpperCase());
+            } else if (citiesMap.containsKey(word.toUpperCase())) {
+                cities.put(index++, citiesMap.get(word.toUpperCase()));
+            }
+        }
+        return cities;
+    }
+
+    private String getInstruction(String query) {
+        Set<String> setInstructions = new HashSet<>();
+        setInstructions.add("CONNECTIONS");
+        setInstructions.add("FLIGHTS");
+        setInstructions.add("FLIGHT");
+
+        String[] items = query.split(" ");
+        List<String> queryWords = Arrays.asList(items);
+
+        String instruction = "";
+        for (String word : queryWords) {
+            if (setInstructions.contains(word.toUpperCase())) {
+                instruction = word.toUpperCase();
+            }
+        }
+        return instruction;
+    }
+
+    private String getResultMessage(String departure, String arrival, String instruction, Map<String, String> citiesMap) {
+        String result = "";
+        if (instruction.isEmpty()) {
+            result = "Sorry, I didn't understand your question. But here are the direct flights of the week \n\n";
+
+            result = result + getFlightsDirect(departure, arrival,
+                    LocalDateTime.now(),
+                    LocalDateTime.now().plusWeeks(1),
+                    citiesMap);
+
+        } else {
+            if (instruction.toUpperCase().equals("CONNECTIONS")) {
+                result = getConnectionsResponse(departure, arrival, citiesMap);
+            }
+            if (instruction.toUpperCase().equals("FLIGHTS")) {
+                result = getFlightsDirect(departure, arrival,
+                        LocalDateTime.now(),
+                        LocalDateTime.now().plusWeeks(1),
+                        citiesMap);
+            }
+        }
+        return result;
+    }
+
+    private String getConnectionsResponse(String departure, String arrival, Map<String, String> cities) {
+        String result = "This are all the connections between " + cities.get(departure) + " and " + cities.get
+                (arrival) + "\n\n";
+
+        List<List<Route>> connections = interconnectionsClient.findRoutesBetween(departure, arrival, 0);
+        List<Route> routingList = connections.get(0);
+
+        if (routingList.size() > 1) {
+            for (Route citiConnect : routingList) {
+                result = result + cities.get(citiConnect.getFrom()).replace("_", " ") + "\n";
+            }
+        } else {
+            result = "Good news!!! You can travel directly from " +
+                    cities.get(departure)
+                    + " to " +
+                    cities.get(arrival) + "\n\n";
+        }
+
+        return result;
+    }
+
+    private String getFlightsDirect(String departure, String arrival,
+                                    LocalDateTime localDepartureDateTime,
+                                    LocalDateTime localArrivalDateTime,
+                                    Map<String, String> cities) {
+
+        List<FlightDto> directFlights =
+                interconnectionsClient.getInterconnections(departure, arrival, localDepartureDateTime, localArrivalDateTime);
+
+        String result = "";
+        if (!directFlights.isEmpty()) {
+            result = "The flights from " + cities.get(departure) + " to " + cities.get(arrival) + " for this week are :\n\n";
+            result = result + "Number      Departure                      Arrival \n";
+
+            for (FlightDto leg : directFlights) {
+                result = result +
+                        leg.getLegs().stream().map(Flight::getNumber).collect(Collectors.toList()).get(0).toString() + "            " +
+                        leg.getLegs().stream().map(Flight::getDepartureTime).collect(Collectors.toList()).get(0).toString() + "        " +
+                        leg.getLegs().stream().map(Flight::getArrivalTime).collect(Collectors.toList()).get(0).toString() + "\n";
+            }
+        }
+
+        return result;
+    }
+
+    private String helpMessage() {
+        String message = "Sorry but I couldn't understand your question. \n\n";
+
+        message = message + "Try something like...\n\n";
+        message = message + "- Give me the CONNECTIONS between MAD and WRO\n";
+        message = message + "- Give me FLIGHTS between Madrid and Dublin\n\n";
+        return message;
     }
 
 }

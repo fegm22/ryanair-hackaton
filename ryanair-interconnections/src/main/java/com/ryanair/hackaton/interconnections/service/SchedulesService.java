@@ -28,7 +28,7 @@ public class SchedulesService {
         );
     }
 
-    @Cacheable("CACHE_SCHEDULES"    )
+    @Cacheable("CACHE_SCHEDULES")
     public Optional<Timetable> getFlightsSchedules(Airport departure, Airport arrival, YearMonth yearMonth) {
         Route route = Route.of(departure, arrival);
 

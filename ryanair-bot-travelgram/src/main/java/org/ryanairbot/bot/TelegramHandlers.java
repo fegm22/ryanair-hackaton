@@ -1,6 +1,7 @@
-package org.ryanairbot.handlers;
+package org.ryanairbot.bot;
 
 import org.ryanairbot.service.RyanairService;
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -8,7 +9,8 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.util.Optional;
 
-public class RyanairHandlers extends TelegramLongPollingBot {
+@Service
+public class TelegramHandlers extends TelegramLongPollingBot {
 
     private final RyanairService ryanairService;
 
@@ -16,10 +18,10 @@ public class RyanairHandlers extends TelegramLongPollingBot {
 
     private final String botUsername;
 
-    public RyanairHandlers(RyanairService ryanairService, String token, String botUsername) {
+    public TelegramHandlers(RyanairService ryanairService/*, String token, String botUsername*/) {
         this.ryanairService = ryanairService;
-        this.token = token;
-        this.botUsername = botUsername;
+        this.token = "506346062:AAHPvBprq65xTow0cBsls5VS88FZyCeLO20";
+        this.botUsername = "ryanair";
     }
 
     @Override
@@ -27,7 +29,7 @@ public class RyanairHandlers extends TelegramLongPollingBot {
         Optional.ofNullable(update)
                 .map(Update::getMessage)
                 .ifPresent(message -> {
-                    this.sendMessage(message.getChatId().toString(), message.getText());
+                    this.sendMessage(message.getChatId().toString(), ryanairService.processMessage(message.getText()));
                 });
     }
 
