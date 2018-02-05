@@ -1,6 +1,28 @@
 # Telegram bot to call Ryanair API
 
-This purpose of this project is create a bot that answer to some instruction about flights information.
+FEIGN IS NOT WORKING AND RETURN A ERROR. Only works when the URL is declared literally.
+
+```
+feign.RetryableException: connect timed out executing GET http://RYANAIR-INTERCONNECTIONS/available/airports
+	at feign.FeignException.errorExecuting(FeignException.java:67) ~[feign-core-9.5.0.jar:na]
+	at feign.SynchronousMethodHandler.executeAndDecode(SynchronousMethodHandler.java:104) ~[feign-core-9.5.0.jar:na]
+	at feign.SynchronousMethodHandler.invoke(SynchronousMethodHandler.java:76) ~[feign-core-9.5.0.jar:na]
+	at feign.ReflectiveFeign$FeignInvocationHandler.invoke(ReflectiveFeign.java:103) ~[feign-core-9.5.0.jar:na]
+	at com.sun.proxy.$Proxy99.getAllAvailableAirports(Unknown Source) ~[na:na]
+	at org.ryanairbot.service.RyanairService.artificialIntelligenceProcess(RyanairService.java:53) ~[classes/:na]
+	at org.ryanairbot.service.RyanairService.processMessage(RyanairService.java:47) ~[classes/:na]
+	at org.ryanairbot.bot.TelegramHandlers.lambda$onUpdateReceived$0(TelegramHandlers.java:35) ~[classes/:na]
+	at java.util.Optional.ifPresent(Optional.java:159) ~[na:1.8.0_152]
+	at org.ryanairbot.bot.TelegramHandlers.onUpdateReceived(TelegramHandlers.java:34) ~[classes/:na]
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:274) ~[telegrambots-3.0.jar:na]
+Caused by: java.net.SocketTimeoutException: connect timed out
+	at java.net.PlainSocketImpl.socketConnect(Native Method) ~[na:1.8.0_152]
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350) ~[na:1.8.0_152]
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206) ~[na:1.8.0_152]
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188) ~[na:1.8.0_152]
+```
+
+The purpose of this project is create a bot that answer to some instruction about flights information. 
 
 Examples of questions:
 - Give me the CONNECTIONS between MAD and DUB
