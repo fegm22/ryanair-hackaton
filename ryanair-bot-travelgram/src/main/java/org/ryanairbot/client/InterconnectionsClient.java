@@ -27,7 +27,7 @@ public interface InterconnectionsClient {
     @GetMapping(value = "/available/airports")
     Map<String, String> getAllAvailableAirports();
 
-    @GetMapping(value = "/find/routes/")
+    @GetMapping(value = "/routes/")
     List<List<Route>> findRoutesBetween(@RequestParam(value = "departure") final String departure,
                                         @RequestParam(value = "arrival") final String arrival,
                                         @RequestParam(value = "maxStops") final Integer maxStops);
