@@ -26,7 +26,7 @@ public class CitiesApiClient extends BaseClient {
             };
             ResponseEntity<List<CitiesDto>> instance = template.exchange(baseUrl, HttpMethod.GET, null, type);
 
-            LOGGER.info("Got response from Routes API " + instance.getStatusCode());
+            LOGGER.debug("Got response from Routes API " + instance.getStatusCode());
 
             if (instance.getStatusCode() == HttpStatus.OK) {
                 return instance.getBody();
@@ -34,7 +34,7 @@ public class CitiesApiClient extends BaseClient {
                 return Collections.emptyList();
             }
         } catch (Exception e) {
-            LOGGER.error("Unable to get routes from Routes API", e);
+            LOGGER.debug("Unable to get routes from Routes API", e);
             return Collections.emptyList();
         }
     }

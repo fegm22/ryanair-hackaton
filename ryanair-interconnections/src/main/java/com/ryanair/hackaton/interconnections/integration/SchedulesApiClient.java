@@ -31,7 +31,7 @@ public class SchedulesApiClient extends BaseClient {
                             arrival.getIataCode(), yearMonth.getYear(), yearMonth.getMonthValue()
                     );
 
-            LOGGER.info("GET schedules from Schedules API ({}->{},{})", departure, arrival, yearMonth);
+            LOGGER.debug("GET schedules from Schedules API ({}->{},{})", departure, arrival, yearMonth);
 
             if (instance.getStatusCode() == HttpStatus.OK) {
                 return Optional.of(instance.getBody());
@@ -39,7 +39,7 @@ public class SchedulesApiClient extends BaseClient {
                 return Optional.empty();
             }
         } catch (Exception e) {
-            LOGGER.error("Unable to get schedules from Schedules API for ({}->{},{})", departure, arrival, yearMonth);
+            LOGGER.debug("Unable to get schedules from Schedules API for ({}->{},{})", departure, arrival, yearMonth);
             return Optional.empty();
         }
     }
