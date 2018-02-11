@@ -113,11 +113,12 @@ public class RyanairService {
     private String getResultMessage(String departure, String arrival, String instruction, Map<String, String> citiesMap) {
         String result = "";
         if (instruction.isEmpty()) {
-            result = "Sorry, I didn't understand your question. But here are the direct flights of the week \n\n";
+            result = "Sorry, I didn't understand your question. But here are the direct flights for the next day" +
+                    " \n\n";
 
             result = result + getFlightsDirect(departure, arrival,
                     LocalDateTime.now(),
-                    LocalDateTime.now().plusWeeks(1),
+                    LocalDateTime.now().plusDays(1),
                     citiesMap);
 
         } else {
@@ -127,7 +128,7 @@ public class RyanairService {
             if (instruction.toUpperCase().equals("FLIGHTS")) {
                 result = getFlightsDirect(departure, arrival,
                         LocalDateTime.now(),
-                        LocalDateTime.now().plusWeeks(1),
+                        LocalDateTime.now().plusDays(1),
                         citiesMap);
             }
         }
@@ -138,18 +139,24 @@ public class RyanairService {
         String result = "This are all the connections between " + cities.get(departure) + " and " + cities.get
                 (arrival) + "\n\n";
 
-        List<List<Route>> connections = interconnectionsClient.findRoutesBetween(departure, arrival, 0);
-        List<Route> routingList = connections.get(0);
+        List<List<Route>> connections = interconnectionsClient.findRoutesBetween(departure, arrival, 1);
 
-        if (routingList.size() > 1) {
-            for (Route citiConnect : routingList) {
-                result = result + cities.get(citiConnect.getFrom()).replace("_", " ") + "\n";
-            }
+        if (connections.isEmpty()) {
+            return "I'm sorry there is not connections between " + cities.get(departure) + " and " + cities.get
+                    (arrival) + "\n\n";
         } else {
-            result = "Good news!!! You can travel directly from " +
-                    cities.get(departure)
-                    + " to " +
-                    cities.get(arrival) + "\n\n";
+            List<Route> routingList = connections.get(0);
+
+            if (routingList.size() > 1) {
+                for (Route citiConnect : routingList) {
+                    result = result + cities.get(citiConnect.getFrom()).replace("_", " ") + "\n";
+                }
+            } else {
+                result = "Good news!!! You can travel directly from " +
+                        cities.get(departure)
+                        + " to " +
+                        cities.get(arrival) + "\n\n";
+            }
         }
 
         return result;
