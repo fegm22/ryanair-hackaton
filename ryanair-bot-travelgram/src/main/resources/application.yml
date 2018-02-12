@@ -19,16 +19,26 @@ ryanair:
   token: 506346062:AAHPvBprq65xTow0cBsls5VS88FZyCeLO20
   user: ryanair
 
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 80000
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: 80000
+#
+#feign:
+#  hystrix:
+#    enabled: true
+#  okhttp:
+#    enabled: true
 
 feign:
+  client:
+    config:
+      default:
+        connectTimeout: 10000000
+        readTimeout: 10000000
+        loggerLevel: basic
   hystrix:
-    enabled: true
-  okhttp:
-    enabled: true
+    enabled: false
