@@ -4,7 +4,6 @@ import org.ryanairbot.client.CommandClient;
 import org.ryanairbot.client.InterconnectionsClient;
 import org.ryanairbot.domain.FlightDto;
 import org.ryanairbot.domain.Flight;
-import org.ryanairbot.domain.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -139,17 +138,16 @@ public class RyanairService {
         String result = "This are all the connections between " + cities.get(departure) + " and " + cities.get
                 (arrival) + "\n\n";
 
-        List<List<Route>> connections = interconnectionsClient.findRoutesBetween(departure, arrival, 1);
+        List<String> connections = interconnectionsClient.findRoutesBetween(departure, arrival);
 
         if (connections.isEmpty()) {
             return "I'm sorry there is not connections between " + cities.get(departure) + " and " + cities.get
                     (arrival) + "\n\n";
         } else {
-            List<Route> routingList = connections.get(0);
 
-            if (routingList.size() > 1) {
-                for (Route citiConnect : routingList) {
-                    result = result + cities.get(citiConnect.getFrom()).replace("_", " ") + "\n";
+            if (connections.size() > 1) {
+                for (String citiConnect : connections) {
+                    result = result + cities.get(citiConnect).replace("_", " ") + "\n";
                 }
             } else {
                 result = "Good news!!! You can travel directly from " +

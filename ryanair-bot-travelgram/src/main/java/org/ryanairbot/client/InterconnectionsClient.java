@@ -1,7 +1,6 @@
 package org.ryanairbot.client;
 
 import org.ryanairbot.domain.FlightDto;
-import org.ryanairbot.domain.Route;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,8 +27,7 @@ public interface InterconnectionsClient {
     Map<String, String> getAllAvailableAirports();
 
     @GetMapping(value = "/routes/")
-    List<List<Route>> findRoutesBetween(@RequestParam(value = "departure") final String departure,
-                                        @RequestParam(value = "arrival") final String arrival,
-                                        @RequestParam(value = "maxStops") final Integer maxStops);
+    List<String> findRoutesBetween(@RequestParam(value = "departure") final String departure,
+                                        @RequestParam(value = "arrival") final String arrival);
 
 }
