@@ -1,0 +1,14 @@
+info:
+  app:
+    name: Flights
+    description: Ryanair recruitment assignment
+    projectVersion: ${project.version}
+    timestamp: ${timestamp}
+    scmVersion: ${buildNumber}
+
+jsondoc:
+    version: 1.0
+    basePath: http://localhost:8080/jsondoc
+    packages[0]: com.ryanair.flights.interconnections
+    playgroundEnabled: true
+    displayMethodAs: URI

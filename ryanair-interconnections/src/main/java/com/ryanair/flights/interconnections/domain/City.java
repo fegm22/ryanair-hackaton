@@ -1,4 +1,4 @@
-package com.ryanair.hackaton.interconnections.model;
+package com.ryanair.flights.interconnections.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

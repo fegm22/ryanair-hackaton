@@ -1,9 +1,8 @@
-package com.ryanair.hackaton.interconnections.dto;
+package com.ryanair.flights.interconnections.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ryanair.hackaton.interconnections.model.City;
 import lombok.Data;
 
 import java.io.Serializable;
