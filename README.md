@@ -1,6 +1,6 @@
 # Telegram bot to call Ryanair API
 
-FEIGN IS NOT WORKING AND RETURN A ERROR. Only works when the URL is declared literally.
+FEIGN IS NOT WORKING WITH THE `FLIGHTS` INSTRUCTION AND RETURN A ERROR. Only works when the URL is declared literally.
 
 ```
 feign.RetryableException: connect timed out executing GET http://RYANAIR-INTERCONNECTIONS/available/airports
