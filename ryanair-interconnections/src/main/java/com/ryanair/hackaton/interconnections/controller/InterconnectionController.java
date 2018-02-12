@@ -64,12 +64,8 @@ public class InterconnectionController {
 
     @GetMapping(value = "/routes")
     public List<List<Route>> findRoutesBetween(@RequestParam(value = "departure") Airport departure,
-                                               @RequestParam(value = "arrival") Airport arrival,
-                                               @RequestParam(value = "maxStops") Integer maxStops) {
+                                               @RequestParam(value = "arrival") Airport arrival) {
 
-        return searchRouteService.findRoutesBetween(departure, arrival, maxStops);
+        return searchRouteService.findRoutesBetween(departure, arrival, 1);
     }
-
-
-
 }
