@@ -23,9 +23,9 @@
         <module>ryanair-bot-travelgram</module>
         <module>ryanair-eureka-server</module>
         <module>ryanair-interconnections</module>
-        <!--<module>command-service</module>-->
-        <!--<module>ryanair-fares</module>-->
-        <!--<module>ryanair-sheduled-flights</module>-->
+        <module>command-service</module>
+        <module>ryanair-fares</module>
+        <module>ryanair-scheduled-flights</module>
     </modules>
 
     <properties>

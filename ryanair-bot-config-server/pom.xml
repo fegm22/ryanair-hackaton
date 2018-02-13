@@ -13,7 +13,7 @@
 	</parent>
 
 	<groupId>com.ryanair.hackathon</groupId>
-	<artifactId>config-server</artifactId>
+	<artifactId>ryanair-bot-config-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
