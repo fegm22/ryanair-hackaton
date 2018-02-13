@@ -1,6 +1,6 @@
 package org.ryanairbot.client;
 
-import org.ryanairbot.domain.FlightDto;
+import org.ryanairbot.domain.Interconnection;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,10 +14,10 @@ import java.util.Set;
 public interface InterconnectionsClient {
 
     @GetMapping("/interconnections")
-    List<FlightDto> getInterconnections(@RequestParam(value = "departure") final String departure,
-                                        @RequestParam(value = "arrival") final String arrival,
-                                        @RequestParam(value = "departureDateTime") final LocalDateTime departureDateTime,
-                                        @RequestParam(value = "arrivalDateTime") final LocalDateTime arrivalDateTime);
+    List<Interconnection> getInterconnections(@RequestParam(value = "departure") final String departure,
+                                              @RequestParam(value = "arrival") final String arrival,
+                                              @RequestParam(value = "departureDateTime") final LocalDateTime departureDateTime,
+                                              @RequestParam(value = "arrivalDateTime") final LocalDateTime arrivalDateTime);
 
     @GetMapping(value = "/available/routes")
     Map<String, Set<String>> getAllAvailableRoutes();

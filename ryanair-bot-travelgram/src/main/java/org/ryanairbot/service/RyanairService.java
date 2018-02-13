@@ -2,8 +2,8 @@ package org.ryanairbot.service;
 
 import org.ryanairbot.client.CommandClient;
 import org.ryanairbot.client.InterconnectionsClient;
-import org.ryanairbot.domain.FlightDto;
-import org.ryanairbot.domain.Flight;
+import org.ryanairbot.domain.Interconnection;
+import org.ryanairbot.domain.Leg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class RyanairService {
     private final CommandClient commandClient;
 
     @Autowired
-    RyanairService(InterconnectionsClient interconnectionsClient, CommandClient commandClient){
+    RyanairService(InterconnectionsClient interconnectionsClient, CommandClient commandClient) {
         this.interconnectionsClient = interconnectionsClient;
         this.commandClient = commandClient;
 
@@ -77,7 +77,7 @@ public class RyanairService {
             if (routes.containsKey(word.toUpperCase())) {
                 cities.put(index++, word.toUpperCase());
             } else if (citiesMap.containsValue(word.toUpperCase())) {
-                cities.put(index++, getKeysByValue(citiesMap, word.toUpperCase()) );
+                cities.put(index++, getKeysByValue(citiesMap, word.toUpperCase()));
             }
         }
         return cities;
@@ -165,7 +165,7 @@ public class RyanairService {
                                     LocalDateTime localArrivalDateTime,
                                     Map<String, String> cities) {
 
-        List<FlightDto> directFlights =
+        List<Interconnection> directFlights =
                 interconnectionsClient.getInterconnections(departure, arrival, localDepartureDateTime, localArrivalDateTime);
 
         String result = "";
@@ -173,11 +173,15 @@ public class RyanairService {
             result = "The flights from " + cities.get(departure) + " to " + cities.get(arrival) + " for this week are :\n\n";
             result = result + "Number      Departure                      Arrival \n";
 
-            for (FlightDto leg : directFlights) {
-                result = result +
-                        leg.getLegs().stream().map(Flight::getNumber).collect(Collectors.toList()).get(0).toString() + "            " +
-                        leg.getLegs().stream().map(Flight::getDepartureTime).collect(Collectors.toList()).get(0).toString() + "        " +
-                        leg.getLegs().stream().map(Flight::getArrivalTime).collect(Collectors.toList()).get(0).toString() + "\n";
+            for (Interconnection interconnection : directFlights) {
+                if (interconnection.getStops() == 0) {
+                    for (Leg leg : interconnection.getLegs()) {
+                        result = result + leg.getFlightNumber() + "            " +
+                                leg.getDepartureDateTime() + "        " +
+                                leg.getArrivalDateTime() + "\n";
+                    }
+                }
+
             }
         }
 
