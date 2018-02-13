@@ -8,10 +8,10 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 @EnableDiscoveryClient
 @SpringBootApplication
 @EnableFeignClients
-public class Application {
+public class TravelgramBotApplication {
 
     public static void main(final String[] args) throws Exception {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(TravelgramBotApplication.class, args);
     }
 }
 
