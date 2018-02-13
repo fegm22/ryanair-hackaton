@@ -82,10 +82,11 @@ public class ScheduleService {
 
                             LocalDateTime flighTimeDeparture = Utils.covertLocalDateTime(year, month, day.getDay(), flight.getDepartureTime());
                             LocalDateTime flighTimeArrival = Utils.covertLocalDateTime(year, month, day.getDay(), flight.getArrivalTime());
+                            String flightNumber = flight.getNumber();
 
                             if (flighTimeDeparture.isAfter(localDepartureDateTime) && flighTimeArrival.isBefore(localArrivalDateTime)) {
 
-                                Leg leg = new Leg(departure, arrival, flighTimeDeparture, flighTimeArrival);
+                                Leg leg = new Leg(flightNumber, departure, arrival, flighTimeDeparture, flighTimeArrival);
                                 Map<String, String> keyRoute = new HashMap<>();
                                 keyRoute.put(departure, arrival);
 
